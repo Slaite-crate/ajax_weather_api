@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../config.js"></script>
+</head>
+<body>
+<h1>Weather forecast from openweather</h1>
+<div id="weat">Weather forecast</div>
+<input id="zip">
+<table>
+    <tr>
+        <td id="by"></td>
+    </tr>
+    <tr>
+        <td id="vejr"></td>
+    </tr>
+    <tr>
+        <td id="temp"></td>
+    </tr>
+    <tr>
+        <td id="vind"></td>
+    </tr>
+    <tr>
+        <td id="retning"></td>
+    </tr>
+</table>
+<button>Update Weather Forecast</button>
+<script>
+    var y = gOptions.api;
+    $(document).ready(function(){
+        $("button").click(function(){
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                url: "https://api.openweathermap.org/data/2.5/weather?zip=" + $("#zip").val() + ",dk&units=metric&APPID=" + y,
+                success: function (responseTxt, statusTxt, xhr){
+                    if(statusTxt == "success"){
+                        $("#weat").hide()
+                        $("#by").html("by: " + responseTxt.name)
+                        $("#vejr").html("vejr: " + responseTxt.weather[0].description)
+                        $("#temp").html("temp: " + responseTxt.main.temp)
+                        $("#vind").html("vind: " + responseTxt.wind.speed)
+                        $("#retning").html("retning: " + responseTxt.wind.deg)
+                    }
+                }
+            })
+        })
+    })
+
+    /*
+    $(document).ready(function(){
+        $("button").click(function(){
+            $.ajax({
+                type: "GET",
+                dataType: "jsonp",
+                url: "https://api.openweathermap.org/data/2.5/weather?zip=2000,dk&units=metric&APPID=" + y,
+                success: function(responseTxt, statusTxt, xhr) {
+                    if (statusTxt == "success") {
+                        //alert("External content loaded successfully!");
+
+
+                        alert(responseTxt.name + ":" + responseTxt.weather[0].description + " " + responseTxt.main.temp);
+
+
+                    }
+                    if (statusTxt == "error")
+                        alert("Error: " + xhr.status + ": " + xhr.statusText);
+                }
+            });
+        });
+    });
+     */
+
+
+</script>
+</body>
+</html>
